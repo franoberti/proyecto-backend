@@ -1,0 +1,38 @@
+[
+    {
+        "title": "IPhone 13",
+        "description": "Este es un producto prueba",
+        "price": 800,
+        "thumbnail": "Sin imagen",
+        "code": "a1",
+        "stock": 25,
+        "id": 1
+    },
+    {
+        "title": "IPhone 13 pro",
+        "description": "Este es un producto prueba",
+        "price": 850,
+        "thumbnail": "Sin imagen",
+        "code": "a2",
+        "stock": 25,
+        "id": 2
+    },
+    {
+        "title": "IPhone 14",
+        "description": "Este es un producto prueba",
+        "price": 1000,
+        "thumbnail": "Sin imagen",
+        "code": "a3",
+        "stock": 25,
+        "id": 3
+    },
+    {
+        "title": "IPhone 14 pro",
+        "description": "Este es un producto prueba",
+        "price": 1050,
+        "thumbnail": "Sin imagen",
+        "code": "a4",
+        "stock": 25,
+        "id": 4
+    }
+]
