@@ -38,16 +38,18 @@ cartsRouter.get('/:cid', (req,res)=> {
     }
 })
 
-cartsRouter.post('/', (req,res)=> {
+cartsRouter.post('/:cid/product/:pid', (req,res)=> {
 
-    const cart = req.body
-    cartManager.addCart(cart)
-    carts = cartManager.getCarts()
+    const id = req.params.cid
+    const prodId = parseInt(req.params.pid) 
+
+    cartManager.addProductByCart(id, prodId)
+    const cart = cartManager.getCartById(id)
 
     return res.status(200).json({
         status: "success",
-        msg: "carrito creado con exito",
-        data: carts
+        msg: "producto incorporado al carrito con exito",
+        data: cart
     })
 }
 )

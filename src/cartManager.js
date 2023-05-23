@@ -1,3 +1,4 @@
+//@ts-check
 import fs from "fs"
 
 class CartManager {
@@ -52,6 +53,26 @@ class CartManager {
         const cartsString = JSON.stringify(this.carts)
         fs.writeFileSync(this.path, cartsString)
 
+    }
+
+    addProductByCart(idCart, idProduct){
+        let cart = this.getCartById(idCart)
+        let founded = false
+
+        for (let i = 0; i < cart.products.length; i++) {
+            if (cart.products[i].product == idProduct){
+                cart.products[i].quantity += 1
+                founded = true
+            }
+        }
+
+        if (founded){
+            this.updatecart(cart, idCart)
+        }
+        else{
+            cart.products.push({"product": idProduct, "quantity": 1})
+            this.updatecart(cart, idCart)
+        }
     }
 
     updatecart(cart, id){
