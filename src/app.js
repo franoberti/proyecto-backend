@@ -9,9 +9,9 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 //Archivos Publicos
-app.use(express.static("public"))
+app.use("/static", express.static("public"))
 //ENDPOINTS
-app.use("/products", productsRouter)
+app.use("/api/products", productsRouter)
 
 
 app.get('*', (req, res) =>{

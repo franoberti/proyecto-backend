@@ -4,7 +4,7 @@ import ProductManager from "../entregable-productManager.js"
 const productsRouter = express.Router()
 
 const productManager = new ProductManager();
-const products = productManager.getProducts()
+let products = productManager.getProducts()
 
 
 productsRouter.get('/', (req,res)=> {
@@ -47,5 +47,48 @@ productsRouter.get('/:pid', (req,res)=> {
         })
     }
 })
+
+productsRouter.delete('/:pid', (req,res)=> {
+
+    const id = req.params.pid
+    products = productManager.deleteProduct(id)
+
+    return res.status(200).json({
+        status: "success",
+        msg: "producto eliminado con exito",
+        data: products
+    })
+}
+)
+
+productsRouter.post('/', (req,res)=> {
+
+    const product = req.body
+    productManager.addProduct(product)
+    products = productManager.getProducts()
+
+    return res.status(200).json({
+        status: "success",
+        msg: "producto creado con exito",
+        data: products
+    })
+}
+)
+
+productsRouter.put('/:pid', (req,res)=> {
+
+    const id = req.params.pid
+    const product = req.body
+    productManager.updateProduct(product, id)
+    products = productManager.getProducts()
+
+    return res.status(200).json({
+        status: "success",
+        msg: "producto creado con exito",
+        data: products
+    })
+}
+
+)
 
 export default productsRouter

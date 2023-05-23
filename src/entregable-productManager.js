@@ -4,7 +4,7 @@ class ProductManager {
 
     constructor() {
         this.products = [];
-        this.path = "./products.json";
+        this.path = "./productos.json";
 
         if(!fs.existsSync(this.path)){
             const productsString = JSON.stringify(this.products)
@@ -29,19 +29,16 @@ class ProductManager {
 
 
     getProducts() {
-        console.log(this.products)
         return this.products
     }
 
     getProductById(id) {
         const found = this.products.find(prod => prod.id == id)
         if (found) {
-            console.log(found)
             return found
         }
         else {
             throw new Error('Not Found')
-            console.log("ERROR: Not Found")
         }
     }
 
@@ -82,8 +79,8 @@ class ProductManager {
             throw new Error('Error: el campo "price" es obligatorio');
         }
 
-        if (!product.thumbnail) {
-            throw new Error('Error: el campo "thumbnail" es obligatorio');
+        if (!product.status) {
+            throw new Error('Error: el campo "status" es obligatorio');
         }
 
         if (!product.code) {
@@ -93,6 +90,11 @@ class ProductManager {
         if (!product.stock) {
             throw new Error('Error: el campo "stock" es obligatorio');
         }
+
+        if (!product.category) {
+            throw new Error('Error: el campo "category" es obligatorio');
+        }
+
 
 
         if (this.#checkCode(product.code)) {
@@ -144,10 +146,11 @@ class ProductManager {
     }
 
     deleteProduct(id){
-        const newProducts = this.products.filter(product => product.id !== id)
+        const newProducts = this.products.filter(product => product.id != id)
         this.products = newProducts
         const productsString = JSON.stringify(this.products)
         fs.writeFileSync(this.path, productsString)
+        return this.products
     }
 
 }
