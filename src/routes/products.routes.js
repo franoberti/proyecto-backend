@@ -1,5 +1,5 @@
 import express from "express"
-import ProductManager from "../entregable-productManager.js"
+import ProductManager from "../productManager.js"
 
 const productsRouter = express.Router()
 

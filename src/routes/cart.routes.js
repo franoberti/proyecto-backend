@@ -1,26 +1,20 @@
 import express from "express"
-import { carts } from "../utils.js";
+import CartManager from "../cartManager.js"
 
 const cartsRouter = express.Router()
 
+const cartManager = new CartManager();
+let carts = cartManager.getCarts()
+
+
 cartsRouter.get('/', (req,res)=> {
 
-    if(req.query && req.query.limit){
-        const productsToShow = carts.slice(0, req.query.limit)
-        return res.status(200).json({
-            status: "success",
-            msg: "A continuacion se muestran los primeros " + req.query.precio + " productos encontrados",
-            data: productsToShow
-        })
-    }
-    else{
-        return res.status(200).json({
-            status: "success",
-            msg: "productos encontrados con exito",
-            data: carts
-        })
+    return res.status(200).json({
+        status: "success",
+        msg: "carritos encontrados con exito",
+        data: carts
+    })
 
-    }
 })  
 
 cartsRouter.get('/:cid', (req,res)=> {
@@ -32,7 +26,7 @@ cartsRouter.get('/:cid', (req,res)=> {
         return res.status(200).json({
             status: "success",
             msg: "carrito encontrado con exito",
-            data: cart
+            data: cart.products
         })
     }
     else{
@@ -43,5 +37,19 @@ cartsRouter.get('/:cid', (req,res)=> {
         })
     }
 })
+
+cartsRouter.post('/', (req,res)=> {
+
+    const cart = req.body
+    cartManager.addCart(cart)
+    carts = cartManager.getCarts()
+
+    return res.status(200).json({
+        status: "success",
+        msg: "carrito creado con exito",
+        data: carts
+    })
+}
+)
 
 export default cartsRouter
