@@ -1,5 +1,6 @@
+//@ts-check
 import express from "express"
-import ProductManager from "../productManager.js"
+import ProductManager from "../handlers/productManager.js"
 
 const prodManager = new ProductManager()
 const products = prodManager.getProducts()

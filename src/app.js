@@ -2,6 +2,7 @@
 import express from "express"
 import productsRouter from "./routes/products.routes.js"
 import routerVistaProducts from "./routes/products.vista.routes.js"
+import routerVistaChatSocket from "./routes/chat-socket.vista.routes.js"
 import cartsRouter from "./routes/cart.routes.js"
 import { Server } from "socket.io"
 import { __dirname } from "./utils.js"
@@ -30,6 +31,8 @@ app.use("/api/carts", cartsRouter)
 //ENDPOINTS VISTAS
 app.use("/vista/products", routerVistaProducts)
 
+//VISTAS CON SOCKETS
+app.use("/vista/chat-socket", routerVistaChatSocket)
 
 app.get('*', (req, res) =>{
     res.status(404).json({status: "error", msg: 'ERROR: Esa ruta no existe', data: {}})
