@@ -1,0 +1,10 @@
+<div>
+    {{#if titulo}}
+        <h1>{{titulo}}</h1>
+    {{else}}
+        <h1>Unkown TITLE</h1>
+    {{/if}}
+    <ul id="productList"></ul>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products-socket.js"></script>

@@ -2,11 +2,16 @@
 import express from "express"
 import productsRouter from "./routes/products.routes.js"
 import routerVistaProducts from "./routes/products.vista.routes.js"
+import routerVistaRealTimeProducts from "./routes/realTimeProducts.vista.routes.js"
 import routerVistaChatSocket from "./routes/chat-socket.vista.routes.js"
 import cartsRouter from "./routes/cart.routes.js"
 import { Server } from "socket.io"
 import { __dirname } from "./utils.js"
 import handlebars from "express-handlebars"
+import ProductManager from "./handlers/productManager.js"
+
+const prodManager = new ProductManager()
+const products = prodManager.getProducts()
 
 const app = express()
 const port = 8080
@@ -32,6 +37,7 @@ app.use("/api/carts", cartsRouter)
 
 //ENDPOINTS VISTAS
 app.use("/vista/products", routerVistaProducts)
+app.use("/vista/realtimeproducts", routerVistaRealTimeProducts)
 
 //VISTAS CON SOCKETS
 app.use("/vista/chat-socket", routerVistaChatSocket)
@@ -47,14 +53,20 @@ const socketServer = new Server(httpServer)
 socketServer.on('connection', (socket) => {
     
     //BACK EMITE "msg_server_to_front"
-    socket.emit('msg_server_to_front', { 
+    socket.emit('msg_products', { 
         author: "Server", 
-        msg: "Bienvenido!!!" 
+        products: products
     })
 
     //BACK ATAJA 'msg_front_to_back'
     socket.on('msg_front_to_back', (msg) => {
     console.log(msg)
-})
+    })
+
+    socketServer.emit('msg_a_todos', { 
+        author: "Server", 
+        msg: "Este es un mensaje a todos los sockets conectados" 
+    })
+
 })
 
