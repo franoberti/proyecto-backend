@@ -80,7 +80,7 @@ class ProductManager {
         }
 
         if (!product.status) {
-            throw new Error('Error: el campo "status" es obligatorio');
+            product.status = true
         }
 
         if (!product.code) {

@@ -15,4 +15,4 @@ routerVistaProducts.get("/", (req, res) => {
     })
 })
 
-export default routerVistaProducts
+export default routerVistaProducts  

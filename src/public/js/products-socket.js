@@ -1,33 +1,50 @@
 
+const socket = io()
 
-const socket = io();
+function validarCampos() {
+    var nombre = document.getElementById("input-nombre").value;
+    var descripcion = document.getElementById("input-description").value;
+    var precio = document.getElementById("input-price").value;
+    var codigo = document.getElementById("input-code").value;
+    var stock = document.getElementById("input-stock").value;
+    var categoria = document.getElementById("input-category").value;
 
-const products = []
+    if (nombre === "" || descripcion === "" || precio === "" || codigo === "" || stock === "" || categoria === "") {
+        alert("Todos los campos son obligatorios. Por favor, complete todos los campos.");
+    } 
+    else {
+
+        const product = {
+            title: nombre,
+            description: descripcion,
+            price: precio,
+            code: codigo,
+            stock: stock,
+            category: categoria,
+        }
+
+        socket.emit('msg_front_to_back', product)
+
+        document.getElementById("input-nombre").value = ""
+        document.getElementById("input-description").value = ""
+        document.getElementById("input-price").value = ""
+        document.getElementById("input-code").value = ""
+        document.getElementById("input-stock").value = ""
+        document.getElementById("input-category").value = ""
+    }   
+}
+
 
 //FRONT ATAJA "msg_server_to_front"
-socket.on("msg_products", (msg) => {
-    console.log(msg.products)
+socket.on("msg_all_products", (products) => {
     console.log(products)
-    products.push(...msg.products)
-    console.log(products)
-    var productList = document.getElementById("productList");
+
+/*     var productList = document.getElementById("productList");
     
     for (var i = 0; i < products.length; i++) {
     var product = products[i];
     var listItem = document.createElement("li");
     listItem.innerHTML = product.title + " - $" + product.price;
     productList.appendChild(listItem);
-
-}
-
-})
-
-//FRONT EMITE 'msg_front_to_back'
-socket.emit('msg_front_to_back', { 
-    author: "Usuario anonimo (front)", 
-    msg: "Hola Server!!!" 
-})
-
-socket.on("msg_a_todos", (msg) => {
-    console.log(msg)
+    } */
 })

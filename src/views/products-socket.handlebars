@@ -1,10 +1,60 @@
 <div>
-    {{#if titulo}}
-        <h1>{{titulo}}</h1>
-    {{else}}
-        <h1>Unkown TITLE</h1>
-    {{/if}}
-    <ul id="productList"></ul>
+    
+    
+    <div id="div-products" style="border: 1px solid blue; margin-bottom: 20px;  padding: 10px">
+        <h1>LISTADO DE PRODUCTOS</h1>
+
+        loading...
+    </div>
+
+    
+
+    <div style="border: 1px solid blue; padding: 10px">
+        <h3>Agrega un nuevo producto</h3>
+
+        <div style="display: flex;">
+            <div style="margin: 2px;">
+                <p>Nombre</p>
+                <input type="text" id="input-nombre" placeholder="Ingrese el nombre">
+                <hr />
+            </div>
+
+            <div style="margin: 2px;">
+                <p>Descripcion</p>
+                <input type="text" id="input-description" placeholder="Ingrese la descripcion">
+                <hr />
+            </div>
+
+            <div style="margin: 2px;">
+                <p>Precio</p>
+                <input type="text" id="input-price" placeholder="Ingrese el precio">
+                <hr />
+            </div>
+
+            <div style="margin: 2px;">
+                <p>Codigo</p>
+                <input type="text" id="input-code" placeholder="Ingrese el codigo">
+                <hr />
+            </div>
+
+            <div style="margin: 2px;">
+                <p>Stock</p>
+                <input type="text" id="input-stock" placeholder="Ingrese el stock">
+                <hr />
+            </div>
+
+            <div style="margin: 2px;">
+                <p>Categoria</p>
+                <input type="text" id="input-category" placeholder="Ingrese la categoria">
+                <hr />
+            </div>
+        </div>
+        <button id="btn-agregar" onclick="validarCampos()">Agregar</button>
+    </div>
+
+    
+
+
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/products-socket.js"></script>
