@@ -42,18 +42,20 @@ socket.on("msg_all_products", (products) => {
     let content = ""
 
     products.forEach(product => {
-        content =`
-            <div style="padding: 10px">
+        content = content + 
+        `
+            <div style="padding: 5px">
                 <p>Producto: ${product.title}</p>
                 <p>ID: ${product.id}</p>
                 <p>Precio: ${product.price}</p>
                 <hr />
             </div>
         `
-        + content
     });
 
     divProd.innerHTML = content
+
+    divProd.scrollTop = divProd.scrollHeight;
 /*     var productList = document.getElementById("productList");
     
     for (var i = 0; i < products.length; i++) {
@@ -65,6 +67,5 @@ socket.on("msg_all_products", (products) => {
 })
 
 document.addEventListener("load", function() {
-    const divProducts = document.getElementById("div-products");
-    divProducts.scrollTop = divProducts.scrollHeight;
+    
 }); 
