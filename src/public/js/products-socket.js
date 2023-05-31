@@ -37,8 +37,23 @@ function validarCampos() {
 
 //FRONT ATAJA "msg_server_to_front"
 socket.on("msg_all_products", (products) => {
-    console.log(products)
+    const divProd = document.getElementById("div-products")
 
+    let content = ""
+
+    products.forEach(product => {
+        content =`
+            <div style="padding: 10px">
+                <p>Producto: ${product.title}</p>
+                <p>ID: ${product.id}</p>
+                <p>Precio: ${product.price}</p>
+                <hr />
+            </div>
+        `
+        + content
+    });
+
+    divProd.innerHTML = content
 /*     var productList = document.getElementById("productList");
     
     for (var i = 0; i < products.length; i++) {
@@ -48,3 +63,8 @@ socket.on("msg_all_products", (products) => {
     productList.appendChild(listItem);
     } */
 })
+
+document.addEventListener("load", function() {
+    const divProducts = document.getElementById("div-products");
+    divProducts.scrollTop = divProducts.scrollHeight;
+}); 

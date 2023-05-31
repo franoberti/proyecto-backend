@@ -51,11 +51,12 @@ const httpServer = app.listen(port, () => console.log(`Servidor arriba en el pue
 const socketServer = new Server(httpServer)
 
 socketServer.on('connection', (socket) => {
+
+    const productsToShow = prodManager.getProducts()
+    socketServer.emit("msg_all_products", productsToShow)
     
     socket.on('msg_front_to_back', (product) => {
-        prodManager.addProduct(product)
-        console.log(prodManager.getProducts())
-        const productsToShow = prodManager.getProducts()
+        prodManager.addProduct(product)        
         socketServer.emit("msg_all_products", productsToShow)
     })
 
