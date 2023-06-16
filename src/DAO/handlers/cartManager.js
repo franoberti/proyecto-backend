@@ -103,4 +103,6 @@ class CartManager {
 }
 
 
+export const cartManager = new CartManager()
+
 export default CartManager

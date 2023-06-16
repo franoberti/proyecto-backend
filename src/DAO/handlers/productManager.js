@@ -104,6 +104,7 @@ class ProductManager {
             this.products.push(newProduct)
             const productsString = JSON.stringify(this.products)
             fs.writeFileSync(this.path, productsString)
+            return newProduct.id
 
         }
         else {
@@ -114,34 +115,25 @@ class ProductManager {
 
     updateProduct(product, id){
 
-        if (this.#checkCode(product.code)) {
+        const index = this.products.findIndex(product => product.id == id)
 
-            const index = this.products.findIndex(product => product.id == id)
+        if(index != -1){
 
-            if(index != -1){
+            this.products[index].title = product.title || this.products[index].title;
+            this.products[index].description = product.description || this.products[index].description
+            this.products[index].price = product.price || this.products[index].price
+            this.products[index].thumbnail = product.thumbnail || this.products[index].thumbnail
+            this.products[index].code = product.code || this.products[index].code
+            this.products[index].stock = product.stock || this.products[index].stock
 
-                this.products[index].title = product.title || this.products[index].title;
-                this.products[index].description = product.description || this.products[index].description
-                this.products[index].price = product.price || this.products[index].price
-                this.products[index].thumbnail = product.thumbnail || this.products[index].thumbnail
-                this.products[index].code = product.code || this.products[index].code
-                this.products[index].stock = product.stock || this.products[index].stock
-    
-                const productsString = JSON.stringify(this.products)
-                fs.writeFileSync(this.path, productsString)
-            
-            }
-            else{
-                throw new Error('Error: El producto buscado para actualizar no existe');
-            }
-
-
-        }
-        else {
-            throw new Error('Error: No es posible agregar el producto, ya que el codigo ingresado ya existe en otro producto');
-        }
-
+            const productsString = JSON.stringify(this.products)
+            fs.writeFileSync(this.path, productsString)
         
+        }
+        else{
+            throw new Error('Error: El producto buscado para actualizar no existe');
+        }
+
 
     }
 
@@ -150,10 +142,10 @@ class ProductManager {
         this.products = newProducts
         const productsString = JSON.stringify(this.products)
         fs.writeFileSync(this.path, productsString)
-        return this.products
     }
 
 }
 
+export const productManager = new ProductManager();
 
 export default ProductManager

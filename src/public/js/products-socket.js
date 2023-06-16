@@ -56,14 +56,7 @@ socket.on("msg_all_products", (products) => {
     divProd.innerHTML = content
 
     divProd.scrollTop = divProd.scrollHeight;
-/*     var productList = document.getElementById("productList");
-    
-    for (var i = 0; i < products.length; i++) {
-    var product = products[i];
-    var listItem = document.createElement("li");
-    listItem.innerHTML = product.title + " - $" + product.price;
-    productList.appendChild(listItem);
-    } */
+
 })
 
 document.addEventListener("load", function() {

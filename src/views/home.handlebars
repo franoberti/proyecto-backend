@@ -1,14 +1,30 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <div>
     {{#if titulo}}
         <h1>{{titulo}}</h1>
     {{else}}
         <h1>Unkown TITLE</h1>
     {{/if}}
-    <h3>Dolar: {{dolar}}</h3>
-    {{#each products}}
-        <p>{{this.title}}</p>
-        <p>{{this.id}}</p>
-        <p>U$D {{this.price}}</p>
+    <hr /><hr />
+    {{#each payload}}
+        <p>ID: <span id="idProd">{{this.id}}</span></p>
+        <p>TITILE: <span>{{this.title}}</span></p>
+        <p>PRICE: U$D <span>{{this.price}}</span></p>
+        <p>DESCCRIPTION: <span>{{this.description}}</span></p>
+        <p>CATEGORY: <span>{{this.category}}</span></p>
+        <p>STOCK: <span>{{this.stock}}</span></p>
+        <p>STATUS: <span>{{this.status}}</span></p>
+        <button onclick="addToCart()"> Agregar al Carrito </button>
         <hr />
     {{/each}}
+    {{#if hasPrevPage}}
+    <a href={{urlPrev}} style="font-size: 40px; text-decoration: none">⬅️</a>
+    {{/if}}
+    <h1 style="display: inline;">{{page}}</h1>
+    {{#if hasNextPage}}
+    <a href={{urlNext}} style="font-size: 40px; text-decoration: none">➡️</a>
+    {{/if}}
+    
 </div>
+
+<script src="/js/products.vista.js"></script>

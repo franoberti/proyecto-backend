@@ -1,14 +1,15 @@
 //@ts-check
 import express from "express"
-import productsRouter from "./routes/products.routes.js"
-import routerVistaProducts from "./routes/products.vista.routes.js"
-import routerVistaRealTimeProducts from "./routes/realTimeProducts.vista.routes.js"
-import routerVistaChatSocket from "./routes/chat-socket.vista.routes.js"
-import cartsRouter from "./routes/cart.routes.js"
+import productsRouter from "./routes/products.router.js"
+import routerVistaProducts from "./routes/products.vista.router.js"
+import routerVistaRealTimeProducts from "./routes/realTimeProducts.vista.router.js"
+import routerVistaChatSocket from "./routes/chat-socket.vista.router.js"
+import cartsRouter from "./routes/cart.router.js"
 import { Server } from "socket.io"
-import { __dirname } from "./utils.js"
+import { __dirname } from "./path.js"
 import handlebars from "express-handlebars"
-import ProductManager from "./handlers/productManager.js"
+import ProductManager from "./DAO/handlers/productManager.js"
+import { connectMongo } from "./utils/connections.js"
 
 const prodManager = new ProductManager()
 const products = prodManager.getProducts()
@@ -16,6 +17,8 @@ const products = prodManager.getProducts()
 const app = express()
 const port = 8080
 
+//CONECTO A LA BD de MongoDB
+connectMongo()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -56,7 +59,7 @@ socketServer.on('connection', (socket) => {
     socketServer.emit("msg_all_products", productsToShow)
     
     socket.on('msg_front_to_back', (product) => {
-        prodManager.addProduct(product)        
+        prodManager.addProduct(product)
         socketServer.emit("msg_all_products", productsToShow)
     })
 
