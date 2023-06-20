@@ -21,6 +21,8 @@ routerVistaProducts.get("/", async (req, res) => {
 
     const products = await productService.getAllProductsPaginated(limit, page, query, sort)
 
+    console.log(products)
+
     let productos = products.docs.map((prod) => {
         return {
             id: prod._id.toString(),

@@ -6,14 +6,9 @@
     {{/if}}
     <hr /><hr />
     {{#each payload}}
-        <p>ID: <span id="idProd">{{this.id}}</span></p>
+        <p>ID: {{this.id}}</p>
         <p>TITILE: <span>{{this.title}}</span></p>
         <p>PRICE: U$D <span>{{this.price}}</span></p>
-        <p>DESCCRIPTION: <span>{{this.description}}</span></p>
-        <p>CATEGORY: <span>{{this.category}}</span></p>
-        <p>STOCK: <span>{{this.stock}}</span></p>
-        <p>STATUS: <span>{{this.status}}</span></p>
-        <button onclick="addToCart()"> Agregar al Carrito </button>
         <hr />
     {{/each}}
     {{#if hasPrevPage}}
@@ -26,5 +21,5 @@
     
 </div>
 
-<script src="/js/products.vista.js"></script>
+<script src="/js/carts.vista.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
