@@ -6,7 +6,7 @@ export const CartsModel = model(
     
     
     new Schema({ /* El Schema lo que hace es definir los campos que tiene la coleccion. En el create y update obliga a seguir esta arq */
-        products: { 
+        products:{
             type: [
                 {
                     product: {

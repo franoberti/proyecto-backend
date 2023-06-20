@@ -67,9 +67,6 @@ cartsRouter.post('/:cid/products/:pid', async (req,res)=> {
         const id = req.params.cid
         const prodId = req.params.pid
     
-        /* cartManager.addProductByCart(id, prodId)
-        const cart = cartManager.getCartById(id) */
-    
         const cart = await cartService.addProductByCart(id, prodId)
     
         return res.status(200).json({

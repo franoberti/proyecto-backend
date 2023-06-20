@@ -13,7 +13,6 @@ routerVistaCart.get("/:cid", async (req, res) => {
         const cart = await cartService.getCartById(id)
 
         const cartToShow = cart[0].products
-        const products = []
 
         let productos = cartToShow.map((prod) => {
             return {
@@ -24,8 +23,6 @@ routerVistaCart.get("/:cid", async (req, res) => {
                 quantity: prod.quantity
             }
         })
-
-        console.log(productos)
     
         if(cart){
             return res.render("cart", {

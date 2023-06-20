@@ -6,14 +6,14 @@
     {{/if}}
     <hr /><hr />
     {{#each payload}}
-        <p>ID: <span id="idProd">{{this.id}}</span></p>
+        <p>ID: <span id="idProd{{@index}}">{{this.id}}</span></p>
         <p>TITILE: <span>{{this.title}}</span></p>
-        <p>PRICE: U$D <span>{{this.price}}</span></p>
-        <p>DESCCRIPTION: <span>{{this.description}}</span></p>
-        <p>CATEGORY: <span>{{this.category}}</span></p>
-        <p>STOCK: <span>{{this.stock}}</span></p>
-        <p>STATUS: <span>{{this.status}}</span></p>
-        <button onclick="addToCart()"> Agregar al Carrito </button>
+        <p>PRICE: U$D {{this.price}}</p>
+        <p>DESCCRIPTION: {{this.description}}</p>
+        <p>CATEGORY: {{this.category}}</p>
+        <p>STOCK: {{this.stock}}</p>
+        <p>STATUS: {{this.status}}</p>
+        <button onclick="addToCart(this, {{@index}})">Agregar al Carrito</button>
         <hr />
     {{/each}}
     {{#if hasPrevPage}}
