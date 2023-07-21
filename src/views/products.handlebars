@@ -1,0 +1,33 @@
+<div>
+    {{#if titulo}}
+        <h1>{{titulo}}</h1>
+        {{#if userName}}
+            <h2>Bienvenido {{userName}}</h2>
+        {{/if}}
+    {{else}}
+        <h1>Unkown TITLE</h1>
+    {{/if}}
+    <hr /><hr />
+    {{#each payload}}
+        <p>ID: <span id="idProd{{@index}}">{{this.id}}</span></p>
+        <p>TITILE: <span>{{this.title}}</span></p>
+        <p>PRICE: U$D {{this.price}}</p>
+        <p>DESCCRIPTION: {{this.description}}</p>
+        <p>CATEGORY: {{this.category}}</p>
+        <p>STOCK: {{this.stock}}</p>
+        <p>STATUS: {{this.status}}</p>
+        <button onclick="addToCart(this, {{@index}})">Agregar al Carrito</button>
+        <hr />
+    {{/each}}
+    {{#if hasPrevPage}}
+    <a href={{urlPrev}} style="font-size: 40px; text-decoration: none">⬅️</a>
+    {{/if}}
+    <h1 style="display: inline;">{{page}}</h1>
+    {{#if hasNextPage}}
+    <a href={{urlNext}} style="font-size: 40px; text-decoration: none">➡️</a>
+    {{/if}}
+    
+</div>
+
+<script src="/js/products.vista.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

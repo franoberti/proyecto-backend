@@ -7,6 +7,9 @@ const viewsRouter = express.Router()
 viewsRouter.get('/login', (req, res) => {
     res.render('login-form')
 })
+viewsRouter.get('/login-github', (req, res) => {
+    res.render('login-github')
+})
 viewsRouter.get('/logout', (req, res) => {
     req.session.destroy((error) => {
         if(error) {
@@ -28,7 +31,10 @@ viewsRouter.get('/profile', checkUser, (req, res) => {
 
 viewsRouter.get('/soloAdmin', checkAdmin, (req, res) => {
     res.send('ESTO SOLO LO PUEDE VER EL ADMIN')
-    
+})
+
+viewsRouter.get('/', (req, res) => {
+    res.render('home')
 })
 
 export default viewsRouter

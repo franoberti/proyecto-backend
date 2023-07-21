@@ -15,6 +15,8 @@ import { connectMongo } from "./utils/connections.js"
 import routerVistaCart from "./routes/cart.vista.router.js"
 import MongoStore from "connect-mongo"
 import session from "express-session"
+import { configPassport } from "./config/passport.config.js"
+import passport from "passport"
 
 const prodManager = new ProductManager()
 const products = prodManager.getProducts()
@@ -33,6 +35,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
+configPassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 //CONFIGURACION DEL MOTOR DE PLANTILLAS HANDLEBARS
 app.engine("handlebars", handlebars.engine())
