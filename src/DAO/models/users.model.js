@@ -7,7 +7,8 @@ const usersSchema = new Schema({ /* El Schema lo que hace es definir los campos 
     email: { type: String, required: true, unique: true},
     age: { type: Number, required: true},
     password: { type: String, required: true},
-    admin: {type: Boolean, required: true, default: false}
+    cart: {type: String, required: true},
+    role: {type: String, default: 'user', required: true}
 })
 
 export const UsersModel = model("users", usersSchema)

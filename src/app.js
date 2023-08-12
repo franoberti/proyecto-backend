@@ -17,16 +17,19 @@ import MongoStore from "connect-mongo"
 import session from "express-session"
 import { configPassport } from "./config/passport.config.js"
 import passport from "passport"
+import { program } from "./config/commander.js"
+import { environment } from "./environment.js"
 
 const prodManager = new ProductManager()
 const products = prodManager.getProducts()
 
 const app = express()
-const port = 8080
+const port = environment.PORT
 
 //CONECTO A LA BD de MongoDB
 connectMongo()
 
+app.use(cookieParser('coder-secret'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(session({
@@ -49,8 +52,6 @@ app.set("view engine", "handlebars")
 //Archivos Publicos
 app.use(express.static(__dirname + "/public"))
 
-console.log(__dirname)
-
 //ENDPOINTS APIs
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
@@ -63,15 +64,17 @@ app.use("/vista/realtimeproducts", routerVistaRealTimeProducts)
 app.use("/vista/cart", routerVistaCart)
 
 app.get('/setCookie', (req, res) => {
-    res.cookie('cookie-test', 'un dato importante', {maxAge: 10000})
+    res.cookie('cookie-test', 'un dato importante', {maxAge: 10000, signed: true})
     return res.json({msg: 'cookie puesta!'})
 })
 app.get('/getCookie', (req, res) => {
-    console.log(req.cookies)
+    console.log('cookie normal', req.cookies)
+    console.log('signed Cookie', req.signedCookies)
     res.send('nada')
 })
 app.get('/deleteCookie', (req, res) => {
-    
+    res.clearCookie('cookie-test')
+    res.send('borrado! fijate en la consola y ya no la tenes!!!')
 })
 
 app.get('*', (req, res) => {
