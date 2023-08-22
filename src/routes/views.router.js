@@ -1,6 +1,6 @@
 //@ts-check
 import express from "express"
-import { checkAdmin, checkUser } from "../middlewares/auth.js"
+import { checkAdmin, checkUser } from "../middlewares/main.js"
 
 const viewsRouter = express.Router()
 

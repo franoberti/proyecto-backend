@@ -1,12 +1,8 @@
 
 import express from "express"
-import ProductManager from "../DAO/handlers/productManager.js"
-import { ProductsModel } from "../DAO/models/products.model.js"
+import { ProductsModel } from "../DAO/mongo/models/products.model.js"
 import { productService } from "../services/products.service.js"
 import { URL, format } from 'url'
-
-const prodManager = new ProductManager()
-const products = prodManager.getProducts()
 
 const routerVistaProducts = express.Router()
 

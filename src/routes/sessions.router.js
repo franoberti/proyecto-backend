@@ -1,5 +1,5 @@
 import express from "express"
-import { UsersModel } from "../DAO/models/users.model.js"
+import { UsersModel } from "../DAO/mongo/models/users.model.js"
 import {createHash, isValidPassword} from '../utils/validations.js'
 import passport from "passport"
 

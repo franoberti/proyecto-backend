@@ -15,3 +15,4 @@ environment.PORT = process.env.PORT
 environment.MONGO_URL = process.env.MONGO_URL
 environment.ADMIN_NAME = process.env.ADMIN_NAME
 environment.ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+environment.PERSISTENCE = process.env.PERSISTENCE

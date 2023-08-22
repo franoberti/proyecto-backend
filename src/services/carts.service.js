@@ -1,30 +1,24 @@
-
-
-import { CartsModel } from "../DAO/models/carts.model.js"
-import { ProductsModel } from "../DAO/models/products.model.js"
+import { Carts } from "../DAO/carts.factory.js"
 
 class CartService {
 
     async getAllCarts() {
-        const carts = await CartsModel.find({}).populate('products.product')
+        const carts = await Carts.getAll()
         return carts
     }
 
     async getCartById(id) {
-        const cart = await CartsModel.find({ _id: id }).populate('products.product')
+        const cart = await Carts.getById(id)
         return cart
     }
 
     async addProductByCart(idCart, idProduct) {
 
-        const cart = await CartsModel.find({ _id: idCart })
+        const cart = await Carts.getById(idCart)
 
         let founded = false
-        /* 
-                const idCompare = "new ObjectId('" + idProduct + "')"
-         */
+
         for (let i = 0; i < cart[0].products.length; i++) {
-            //console.log("cart[0].products[", i, "].product = ", cart[0].products[i].product.toString(), "idProduct =", idProduct)
             if (cart[0].products[i].product.toString() === idProduct) {
                 cart[0].products[i].quantity += 1
                 founded = true
@@ -32,48 +26,33 @@ class CartService {
             }
         }
 
-        //console.log("valor de founded: ", founded)
-
         if (founded) {
-            /* this.updatecart(cart, idCart) */
-            const cartUpdated = await CartsModel.updateOne(
-                { _id: idCart },
-                { $set: { products: cart[0].products } }
-            )
+            const cartUpdated = await Carts.updateOneProductCart(idCart, cart)
             return cartUpdated
         }
         else {
             cart[0].products.push({ "product": idProduct, "quantity": 1 })
 
             console.log("carrito despues de agregado el product: \n", cart)
-            /* this.updatecart(cart, idCart) */
-            const cartUpdated = await CartsModel.updateOne(
-                { _id: idCart },
-                { $set: { products: cart[0].products } }
-            )
+            const cartUpdated = await Carts.updateOneProductCart(idCart, cart)
             return cartUpdated
         }
-
 
     }
 
     async deleteProductByCart(idCart, idProd) {
-        const cart = await CartsModel.find({ _id: idCart })
+        const cart = await Carts.getById(idCart)
 
         let founded = false
         let cartUpdated
 
         for (let i = 0; i < cart[0].products.length; i++) {
-            if (cart[0].products[i].product.toString() === idProd) {
 
-                /* productDeleted = cart[0].products[i] */
+            if (cart[0].products[i].product._id.toString() === idProd) {
                 cart[0].products.splice(i, 1)
                 founded = true
-
-                cartUpdated = await CartsModel.updateOne(
-                    { _id: idCart },
-                    { $set: { products: cart[0].products } }
-                )
+                
+                cartUpdated = await Carts.updateOneProductCart(idCart, cart)
             }
         }
 
@@ -81,28 +60,25 @@ class CartService {
     }
 
     async createCart() {
-        const cartCreated = await CartsModel.create({})
+        const cartCreated = await Carts.createCart()
         return cartCreated
     }
 
-    async updateAllProductsOnCart(id, products) {
+    async updateAllProductsOnCart(idCart, products) {
 
-        const cartUpdated = await CartsModel.updateOne(
-            { _id: id },
-            { $set: { products: products } }
-        )
+        const cartUpdated = await Carts.updateAllProducts(idCart, products)
         return cartUpdated
 
     }
 
     async updateQuantity(idCart, idProduct, quantity) {
 
-        const cart = await CartsModel.find({ _id: idCart })
+        const cart = await Carts.getById(idCart)
 
         let founded = false
 
         for (let i = 0; i < cart[0].products.length; i++) {
-            if (cart[0].products[i].product.toString() === idProduct) {
+            if (cart[0].products[i].product._id.toString() === idProduct) {
 
                 cart[0].products[i].quantity = quantity
                 founded = true
@@ -112,25 +88,18 @@ class CartService {
         }
 
         if (founded) {
-            const cartUpdated = await CartsModel.updateOne(
-                { _id: idCart },
-                { $set: { products: cart[0].products } }
-            )
+            const cartUpdated = await Carts.updateOneProductCart(idCart, cart)
             return cartUpdated
         }
         else {
-
             const cartUpdated = undefined
             return cartUpdated
         }
 
     }
-    
-    async deleteAllProductsOnCart(id) {
-        const cartUpdated = await CartsModel.updateOne(
-            { _id: id },
-            { $set: { products: [] } }
-        )
+
+    async deleteAllProductsOnCart(idCart) {
+        const cartUpdated = await Carts.updateAllProducts(idCart, [])
         return cartUpdated
     }
 }

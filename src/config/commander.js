@@ -10,5 +10,3 @@ program
     .option('-l, --letters [letters...]', 'Especificar letras')
 
 program.parse() //Cierra la configuracion de comandos
-
-

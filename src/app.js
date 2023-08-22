@@ -10,8 +10,7 @@ import { Server } from "socket.io"
 import cookieParser from "cookie-parser"
 import { __dirname } from "./path.js"
 import handlebars from "express-handlebars"
-import ProductManager from "./DAO/handlers/productManager.js"
-import { connectMongo } from "./utils/connections.js"
+import MongoSingleton from "./utils/connections.js"
 import routerVistaCart from "./routes/cart.vista.router.js"
 import MongoStore from "connect-mongo"
 import session from "express-session"
@@ -19,16 +18,15 @@ import { configPassport } from "./config/passport.config.js"
 import passport from "passport"
 import { program } from "./config/commander.js"
 import { environment } from "./environment.js"
-
-const prodManager = new ProductManager()
-const products = prodManager.getProducts()
+import cors from 'cors'
 
 const app = express()
 const port = environment.PORT
 
 //CONECTO A LA BD de MongoDB
-connectMongo()
+MongoSingleton.getInstance()
 
+app.use(cors())
 app.use(cookieParser('coder-secret'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -87,12 +85,12 @@ const socketServer = new Server(httpServer)
 
 socketServer.on('connection', (socket) => {
 
-    const productsToShow = prodManager.getProducts()
+    /* const productsToShow = prodManager.getProducts()
     socketServer.emit("msg_all_products", productsToShow)
     
     socket.on('msg_front_to_back', (product) => {
         prodManager.addProduct(product)
         socketServer.emit("msg_all_products", productsToShow)
-    })
+    }) */
 
 })
