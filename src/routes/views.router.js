@@ -1,6 +1,6 @@
 //@ts-check
 import express from "express"
-import { checkAdmin, checkUser } from "../middlewares/main.js"
+import { checkAdmin, checkUser, checkLogIn } from "../middlewares/main.js"
 
 const viewsRouter = express.Router()
 
@@ -33,7 +33,7 @@ viewsRouter.get('/soloAdmin', checkAdmin, (req, res) => {
     res.send('ESTO SOLO LO PUEDE VER EL ADMIN')
 })
 
-viewsRouter.get('/', (req, res) => {
+viewsRouter.get('/', checkLogIn, (req, res) => {
     res.render('home')
 })
 

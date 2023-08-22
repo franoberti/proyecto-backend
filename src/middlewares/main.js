@@ -1,8 +1,15 @@
 export function checkUser(req, res, next) {
-    if(req.session.email){
+    if(req.session.user.email){
         return next()
     }
-    return res.status(401).render('error-page')
+    return res.status(401).render('login-form')
+}
+
+export function checkLogIn(req, res, next) {
+    if(req.session.user){
+        return next()
+    }
+    return res.status(401).render('login-form')
 }
 
 export function checkAdmin(req, res, next) {

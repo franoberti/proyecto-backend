@@ -1,4 +1,6 @@
-import { UsersModel } from "../DAO/models/users.model.js"
+import { UsersModel } from "../DAO/mongo/models/users.model.js"
+import { Users } from "../DAO/users.factory.js"
+
 
 class UsersService {
     
@@ -19,12 +21,7 @@ class UsersService {
     }
     
     async getUsers(email, pass) {
-        const userFounded = await UsersModel.find({email: email, password: pass})
-
-        if(userFounded.length === 0){
-            throw "ERROR: Incorrect email or password"
-        }
-
+        const userFounded = await Users.getUsers(email, pass)
         return userFounded
     }
 
