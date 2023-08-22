@@ -1,35 +1,13 @@
-
-import { ProductsModel } from "../DAO/mongo/models/products.model.js"
+import { Products } from "../DAO/products.factory.js"
 
 class ProductService {
 
-    validateCreateProduct( title, description, price, thumbnail, code, stock, status, category ) {
-        if (!title || !description || !price || !thumbnail || !code || !stock || !status || !category ){
-            console.log("Validation Error: missing values")
-            throw "VALIDATION ERROR"
-        }
-    }
-
-    validateUpdateProduct(title, description, price, thumbnail, code, stock, status, category, id){
-        if (!title || !description || !price || !thumbnail || !code || !stock || !category || !id) {
-            console.log("Validation Error: missing values")
-            throw "VALIDATION ERROR"
-        }
-    }
-    
-    validateId(id){
-        if (!id) {
-            console.log("Validation Error: missing values")
-            throw "VALIDATION ERROR"
-        }
-    }
     async getAllProducts() {
-        const products = await ProductsModel.find({})
+        const products = await Products.getAll()
         return products
     }
 
     async getAllProductsPaginated(limit, page, query, sort){
-        let products
         const optionQuery = {}
         const optionSort = {}
 
@@ -46,63 +24,31 @@ class ProductService {
             optionSort.sort = { price: sort }
         }
             
-        products = await ProductsModel.paginate( optionQuery ,{ limit: limit || 10, page: page || 1, ...optionSort })
-
+        const products = await Products.getAllPaginated(optionQuery, optionSort, limit, page)
         return products
     }
 
     async getProductById(id) {
-        const product = await ProductsModel.find({ _id: id})
+        const product = await Products.getById(id)
         return product
     }
     
     async createProduct(product) {
-
-        this.validateCreateProduct(product.title, product.description, product.price, product.thumbnail, product.code, product.stock, product.status, product.category)
-
-        /* ESTO ES EN fileSystem */
-        /* const idNewProd = productManager.addProduct(product) */
-        /* const id = idNewProd */
-        
-        /* AHORA LO HAGO PARA Mongoose */
         const { title, description, price, thumbnail, code, stock, status, category } = product
 
-        
-        let createdProduct = await ProductsModel.create({title, description, price, thumbnail, code, stock, status, category})
+        let createdProduct = await Products.createProduct(title, description, price, thumbnail, code, stock, status, category)
         return createdProduct
     }
 
     async updateProduct(product, id){
-        const { title, description, price, thumbnail, code, stock, status, category} = product
-
-        this.validateUpdateProduct( title, description, price, thumbnail, code, stock, status, category, id)
-
-        /* FileSystem */
-        /* productManager.updateProduct(product, id) */
-
-        /* MongoDB */
-        const productUpdated = await ProductsModel.updateOne(
-            { _id: id },
-            { title, description, price, thumbnail, code, stock, status, category }
-        )
-
+        const productUpdated = await Products.updateProduct(product, id)
         return productUpdated
-
     }
 
     async deleteProduct(id) {
-        this.validateId(id)
-
-        /* MongoDB */
-        const productDeleted = await ProductsModel.deleteOne({ _id: id })
-
-        /* FileSystem */
-        /* productManager.deleteProduct(id) */
-
+        const productDeleted = await Products.deleteProduct(id)
         return productDeleted
     }
-
-
 
 }
 
