@@ -4,6 +4,8 @@
     {{else}}
         <h1>Unkown TITLE</h1>
     {{/if}}
+    <p id="cartId">{{cartId}}</p>
+    <button onclick="vaciarCarrito()">Vaciar Carrito</button>
     <hr /><hr />
     {{#each payload}}
         <p>ID: {{this.id}}</p>
@@ -19,6 +21,9 @@
     <a href={{urlNext}} style="font-size: 40px; text-decoration: none">➡️</a>
     {{/if}}
     
+    <a href="/vista/products?limit=2">Volver a Productos</a>
+    <hr>
+    <a href="/logout">Log Out</a>
 </div>
 
 <script src="/js/carts.vista.js"></script>

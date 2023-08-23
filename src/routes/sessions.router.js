@@ -1,5 +1,6 @@
 import express from "express"
 import passport from "passport"
+import { cartsController } from "../controllers/carts.controller.js"
 
 const sessionRouter = express.Router()
 
@@ -9,9 +10,11 @@ sessionRouter.post('/login', passport.authenticate('login', {failureRedirect: '/
         return res.status(400).render('error-page', {msg: 'error al loggear el usuario'})
     }
 
-    req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, age: req.user.age, lastName: req.user.lastName, isAdmin: req.user.admin }
+    console.log(req.user)
 
-    return res.redirect(`/vista/products/${req.user.firstName}`)
+    req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, age: req.user.age, lastName: req.user.lastName, isAdmin: req.user.admin, cart: req.user.cart }
+
+    return res.redirect(`/vista/products?limit=2`)
 
 })
 

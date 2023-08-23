@@ -1,5 +1,6 @@
 export function checkUser(req, res, next) {
-    if(req.session.user.email){
+    
+    if(req.session.user){
         return next()
     }
     return res.status(401).render('login-form')

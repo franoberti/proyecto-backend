@@ -3,21 +3,22 @@ import express from "express"
 import { ProductsModel } from "../DAO/mongo/models/products.model.js"
 import { productService } from "../services/products.service.js"
 import { URL, format } from 'url'
+import { checkUser } from "../middlewares/main.js"
 
 const routerVistaProducts = express.Router()
 
-routerVistaProducts.get("/", async (req, res) => {
+routerVistaProducts.get("/", checkUser, async (req, res) => {
 
     const parametros = req.query;
     let urlPrev
     let urlNext
 
-
     const { page, limit, query, sort } = req.query
+    const userName = req.session.user.firstName
+    const cartId = req.session.user.cart
+    console.log(cartId)
 
     const products = await productService.getAllProductsPaginated(limit, page, query, sort)
-
-    console.log(products)
 
     let productos = products.docs.map((prod) => {
         return {
@@ -30,7 +31,6 @@ routerVistaProducts.get("/", async (req, res) => {
             status: prod.status.toString()
         }
     })
-
 
     if (products.hasPrevPage) {
 
@@ -67,8 +67,12 @@ routerVistaProducts.get("/", async (req, res) => {
         page: products.page,
         hasPrevPage: products.hasPrevPage,
         hasNextPage: products.hasNextPage,
+        userName: userName,
+        cartId: cartId
     })
 })
+
+
 routerVistaProducts.get("/:userName", async (req, res) => {
 
     const userName = req.params.userName

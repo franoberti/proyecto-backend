@@ -33,7 +33,7 @@ viewsRouter.get('/soloAdmin', checkAdmin, (req, res) => {
     res.send('ESTO SOLO LO PUEDE VER EL ADMIN')
 })
 
-viewsRouter.get('/', checkLogIn, (req, res) => {
+viewsRouter.get('/', checkUser, (req, res) => {
     res.render('home')
 })
 

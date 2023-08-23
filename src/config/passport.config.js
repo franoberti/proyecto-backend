@@ -3,6 +3,7 @@ import local from "passport-local"
 import { createHash, isValidPassword } from "../utils/validations.js";
 import { UsersModel } from "../DAO/mongo/models/users.model.js";
 import GitHubStrategy from 'passport-github2';
+import { CartsModel } from "../DAO/mongo/models/carts.model.js";
 
 const LocalStategy = local.Strategy
 
@@ -17,7 +18,7 @@ export function configPassport() {
                     return done(null, false)
                 }
                 if (!isValidPassword(password, user.password)) {
-                    console.log('ivalid Password')
+                    console.log('invalid Password')
                     return done(null, false)
                 }
 
@@ -40,18 +41,20 @@ export function configPassport() {
                     return done(null, false)
                 }
 
+                const cart = await CartsModel.create({})
+
                 const newUser = {
                     email,
                     firstName,
                     lastName,
                     age,
                     admin: false,
-                    password: createHash(password)
+                    password: createHash(password),
+                    cart: cart._id.toString()
                 }
 
                 let userCreated = await UsersModel.create(newUser)
 
-                console.log(userCreated)
                 console.log('User Registration Succesful')
                 return done(null, userCreated)
 
@@ -91,14 +94,17 @@ export function configPassport() {
 
                     let user = await UsersModel.findOne({ email: profile.email });
                     if (!user) {
+                        const cart = await CartsModel.create({})
+                
                         const newUser = {
                             email: profile.email,
                             firstName: profile._json.name || profile._json.login || 'noname',
                             lastName: 'nolast',
                             isAdmin: false,
                             password: 'nopass',
+                            cart: cart._id.toString()
                         };
-                        let userCreated = await UserModel.create(newUser);
+                        let userCreated = await UsersModel.create(newUser);
                         console.log('User Registration succesful');
                         return done(null, userCreated);
                     } else {

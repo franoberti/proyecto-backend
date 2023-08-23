@@ -11,6 +11,7 @@ routerVistaCart.get("/:cid", async (req, res) => {
 
         const id = req.params.cid
         const cart = await cartService.getCartById(id)
+        const cartId = req.session.user.cart
 
         const cartToShow = cart[0].products
 
@@ -28,8 +29,8 @@ routerVistaCart.get("/:cid", async (req, res) => {
             return res.render("cart", {
                 status: "success",
                 titulo: "CARRITO",
-                payload: productos
-                
+                payload: productos,
+                cartId: cartId
             })
         }
         else{
