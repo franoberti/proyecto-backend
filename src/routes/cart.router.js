@@ -16,6 +16,8 @@ cartsRouter.delete('/:cid/products/:pid', cartsController.deleteProductByCart)
 
 cartsRouter.put('/:cid', cartsController.updateAllProductsOnCart)
 
+cartsRouter.put('/:cid/purchase', cartsController.purchase)
+
 cartsRouter.put('/:cid/products/:pid', cartsController.updateQuantityOfOneProduct)
 
 cartsRouter.delete('/:cid/products', cartsController.deleteAllProducts)

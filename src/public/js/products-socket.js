@@ -1,4 +1,3 @@
-
 const socket = io()
 
 function validarCampos() {
@@ -11,7 +10,7 @@ function validarCampos() {
 
     if (nombre === "" || descripcion === "" || precio === "" || codigo === "" || stock === "" || categoria === "") {
         alert("Todos los campos son obligatorios. Por favor, complete todos los campos.");
-    } 
+    }
     else {
 
         const product = {
@@ -21,7 +20,10 @@ function validarCampos() {
             code: codigo,
             stock: stock,
             category: categoria,
+            thumbnail: "Sin imagen",
+            status: true
         }
+
 
         socket.emit('msg_front_to_back', product)
 
@@ -31,7 +33,20 @@ function validarCampos() {
         document.getElementById("input-code").value = ""
         document.getElementById("input-stock").value = ""
         document.getElementById("input-category").value = ""
-    }   
+    }
+}
+
+function eliminarProducto(idProducto){
+    console.log('Entras')
+    axios.delete(`/api/products/${idProducto}`, {})
+    .then(response => {
+        console.log(response.data);
+        alert('Producto Eliminado con exito!');
+        socket.emit('msg_front_to_back_delete_product', idProducto)
+    })
+    .catch(error => {
+        console.error(error);
+    });
 }
 
 
@@ -42,12 +57,14 @@ socket.on("msg_all_products", (products) => {
     let content = ""
 
     products.forEach(product => {
-        content = content + 
-        `
+        const idProd = `'${product._id.toString()}'`
+        content = content +
+            `
             <div style="padding: 5px">
                 <p>Producto: ${product.title}</p>
-                <p>ID: ${product.id}</p>
+                <p>ID: ${product._id}</p>
                 <p>Precio: ${product.price}</p>
+                <button onclick="eliminarProducto(${idProd})"">Eliminar Producto</button>
                 <hr />
             </div>
         `
@@ -59,6 +76,6 @@ socket.on("msg_all_products", (products) => {
 
 })
 
-document.addEventListener("load", function() {
-    
-}); 
+document.addEventListener("load", function () {
+
+});

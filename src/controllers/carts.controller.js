@@ -1,6 +1,8 @@
 import { cartService } from "../services/carts.service.js"
 
 class CartsController {
+    
+    
 
     constructor(){}
 
@@ -145,6 +147,29 @@ class CartsController {
             })
     
     
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                status: "error",
+                msg: "something went wrong :(",
+                data: {}
+            })
+        }
+    }
+
+    async purchase(req, res) {
+        try {
+            const idCart = req.params.cid
+            const purchaser = req.session.user.email
+            const cart = await cartService.purchase(idCart, purchaser)
+    
+            return res.status(200).json({
+                status: "success",
+                msg: "La compra se ha realizado y el carrito actualizado con exito",
+                data: cart
+            })
+
+
         } catch (error) {
             console.log(error)
             return res.status(500).json({

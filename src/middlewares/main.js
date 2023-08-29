@@ -14,10 +14,12 @@ export function checkLogIn(req, res, next) {
 }
 
 export function checkAdmin(req, res, next) {
-    if(req.session.email && req.session.admin == true){
+    console.log(req)
+    if(req.session && req.session.user && req.session.user.isAdmin == true){
         return next()
     }
-    return res.status(403).render('error-page')
+        return res.status(403).render('error-page',  {msg: 'No puedes ingresar a esta seccion ya que no eres Administrador'})
+
 }
 
 export function validateCreateProduct(req, res, next) {

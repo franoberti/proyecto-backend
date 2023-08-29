@@ -19,9 +19,23 @@ import passport from "passport"
 import { program } from "./config/commander.js"
 import { environment } from "./environment.js"
 import cors from 'cors'
+import { productsController } from "./controllers/products.controller.js"
+import { productService } from "./services/products.service.js"
+import { checkAdmin, validateId } from "./middlewares/main.js"
+import ticketsRouter from "./routes/tickets.router.js"
+import nodemailer from 'nodemailer'
 
 const app = express()
 const port = environment.PORT
+
+const transport = nodemailer.createTransport({
+    service: "gmail",
+    port: 587,
+    auth: {
+        user: 'franoberti45@gmail.com',
+        pass: 'aoexjirpukrdzenk'
+    }
+})
 
 //CONECTO A LA BD de MongoDB
 MongoSingleton.getInstance()
@@ -31,7 +45,7 @@ app.use(cookieParser('coder-secret'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(session({
-    store: MongoStore.create({mongoUrl: "mongodb+srv://franoberti45:PyoBTzvOuelYsaj7@franocluster.hx1jh7a.mongodb.net/", ttl: 86400 * 7}),
+    store: MongoStore.create({ mongoUrl: "mongodb+srv://franoberti45:PyoBTzvOuelYsaj7@franocluster.hx1jh7a.mongodb.net/", ttl: 86400 * 7 }),
     secret: 'un-secreto',
     resave: true,
     saveUninitialized: true
@@ -54,6 +68,7 @@ app.use(express.static(__dirname + "/public"))
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api/sessions", sessionRouter)
+app.use("/api/tickets", ticketsRouter)
 app.use("/", viewsRouter)
 
 //ENDPOINTS VISTAS
@@ -62,8 +77,8 @@ app.use("/vista/realtimeproducts", routerVistaRealTimeProducts)
 app.use("/vista/cart", routerVistaCart)
 
 app.get('/setCookie', (req, res) => {
-    res.cookie('cookie-test', 'un dato importante', {maxAge: 10000, signed: true})
-    return res.json({msg: 'cookie puesta!'})
+    res.cookie('cookie-test', 'un dato importante', { maxAge: 10000, signed: true })
+    return res.json({ msg: 'cookie puesta!' })
 })
 app.get('/getCookie', (req, res) => {
     console.log('cookie normal', req.cookies)
@@ -75,22 +90,51 @@ app.get('/deleteCookie', (req, res) => {
     res.send('borrado! fijate en la consola y ya no la tenes!!!')
 })
 
-app.get('*', (req, res) => {
-    res.status(404).json({ status: "error", msg: 'ERROR: Esa ruta no existe', data: {} })
+app.get('/mail', async (req, res) => {
+    const result = await transport.sendMail({
+        from: 'franoberti45@gmail.com',
+        to: "franoberti1998@gmail.com",
+        subject: 'TEST',
+        html: `
+            <div>
+                <h1> HOLA ESTO ES UN TEST </h1>
+                <p> Esto significa que el test funciono </p>
+            </div>
+        
+        `
+    })
+
+    console.log(result)
+    res.send('Email Sent')
 })
+
 
 const httpServer = app.listen(port, () => console.log(`Servidor arriba en el puerto ${port} !!`))
 
 const socketServer = new Server(httpServer)
 
-socketServer.on('connection', (socket) => {
+socketServer.on('connection', async (socket) => {
 
-    /* const productsToShow = prodManager.getProducts()
-    socketServer.emit("msg_all_products", productsToShow)
-    
-    socket.on('msg_front_to_back', (product) => {
-        prodManager.addProduct(product)
+    try {
+        const productsToShow = await productService.getAllProducts()
         socketServer.emit("msg_all_products", productsToShow)
-    }) */
 
+        socket.on('msg_front_to_back', async (product) => {
+            await productService.createProduct(product)
+            const productsToShow = await productService.getAllProducts()
+            socketServer.emit("msg_all_products", productsToShow)
+        })
+
+        socket.on('msg_front_to_back_delete_product', async () => {
+            const productsToShow = await productService.getAllProducts()
+            socketServer.emit("msg_all_products", productsToShow)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+app.get('*', (req, res) => {
+    res.status(404).json({ status: "error", msg: 'ERROR: Esa ruta no existe', data: {} })
 })

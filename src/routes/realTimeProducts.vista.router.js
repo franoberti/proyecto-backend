@@ -1,9 +1,10 @@
 //@ts-check
 import express from "express"
+import { checkAdmin } from "../middlewares/main.js"
 
 const routerVistaRealTimeProducts = express.Router()
 
-routerVistaRealTimeProducts.get("/", (req, res) => {
+routerVistaRealTimeProducts.get("/", checkAdmin, (req, res) => {
     return res.render("products-socket", {})
 })
 

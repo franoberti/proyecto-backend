@@ -3,7 +3,6 @@ import express from "express"
 import { usersService } from "../services/users.service.js"
 import { usersController } from "../controllers/users.controller.js"
 
-
 const usersRouter = express.Router()
 
 //LOGIN
