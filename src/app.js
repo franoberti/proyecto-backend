@@ -24,6 +24,8 @@ import { productService } from "./services/products.service.js"
 import { checkAdmin, validateId } from "./middlewares/main.js"
 import ticketsRouter from "./routes/tickets.router.js"
 import nodemailer from 'nodemailer'
+import errorHandler from './middlewares/error.js'
+import { generateProduct } from "./utils/generator.js"
 
 const app = express()
 const port = environment.PORT
@@ -108,6 +110,14 @@ app.get('/mail', async (req, res) => {
     res.send('Email Sent')
 })
 
+app.get('/mockingproducts', async (req, res) => {
+    const products = []
+    for (let i = 0; i < 100; i++) {
+        products.push(generateProduct())
+    }
+
+    res.send({status: 'success', payload: products})
+})
 
 const httpServer = app.listen(port, () => console.log(`Servidor arriba en el puerto ${port} !!`))
 
@@ -138,3 +148,5 @@ socketServer.on('connection', async (socket) => {
 app.get('*', (req, res) => {
     res.status(404).json({ status: "error", msg: 'ERROR: Esa ruta no existe', data: {} })
 })
+
+app.use(errorHandler)
