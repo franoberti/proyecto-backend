@@ -26,6 +26,7 @@ import ticketsRouter from "./routes/tickets.router.js"
 import nodemailer from 'nodemailer'
 import errorHandler from './middlewares/error.js'
 import { generateProduct } from "./utils/generator.js"
+import { logger } from "./middlewares/logger.js"
 
 const app = express()
 const port = environment.PORT
@@ -83,8 +84,6 @@ app.get('/setCookie', (req, res) => {
     return res.json({ msg: 'cookie puesta!' })
 })
 app.get('/getCookie', (req, res) => {
-    console.log('cookie normal', req.cookies)
-    console.log('signed Cookie', req.signedCookies)
     res.send('nada')
 })
 app.get('/deleteCookie', (req, res) => {
@@ -106,7 +105,6 @@ app.get('/mail', async (req, res) => {
         `
     })
 
-    console.log(result)
     res.send('Email Sent')
 })
 
@@ -119,7 +117,11 @@ app.get('/mockingproducts', async (req, res) => {
     res.send({status: 'success', payload: products})
 })
 
-const httpServer = app.listen(port, () => console.log(`Servidor arriba en el puerto ${port} !!`))
+app.get('/loggerTest', (req, res) => {
+    logger.warn('Nivel de importancia WARN')
+})
+
+const httpServer = app.listen(port, () => logger.info(`Servidor arriba en el puerto ${port} !!`))
 
 const socketServer = new Server(httpServer)
 

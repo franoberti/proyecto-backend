@@ -5,7 +5,6 @@ export let Carts
 
 switch (environment.PERSISTENCE) {
     case "MONGO":
-        console.log('Mongo connect')
         MongoSingleton.getInstance()
 
         const { cartsMongo } = await import('./mongo/carts.mongo.js')

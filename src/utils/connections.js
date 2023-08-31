@@ -1,5 +1,6 @@
 import { connect } from "mongoose"
 import { environment } from "../environment.js"
+import { logger } from "../middlewares/logger.js"
 
 export default class MongoSingleton{
 
@@ -12,9 +13,9 @@ export default class MongoSingleton{
     async connectMongo() {
         try {
             await connect(environment.MONGO_URL + "/?retryWrites=true&w=majority")
-            console.log("plug to mongo!")
+            logger.info("plug to mongo!")
         } catch (e) {
-            console.log(e)
+            logger.error(e)
 
             throw 'can not connect to the db'
         }
@@ -22,12 +23,12 @@ export default class MongoSingleton{
 
     static getInstance(){
         if (this.instance){
-            console.log('Already Connected!')
+            logger.info('Already Connected!')
             return this.instance
         }
         else{
             this.instance = new MongoSingleton()
-            console.log('Connected!');
+            logger.info('Connected!');
 
             return this.instance
         }

@@ -1,4 +1,5 @@
 import ProductDTO from "../DAO/DTO/products.dto.js";
+import { logger } from "../middlewares/logger.js";
 import { productService } from "../services/products.service.js";
 
 class ProductsController {
@@ -27,7 +28,7 @@ class ProductsController {
             })
         }
         catch (error) {
-            console.log(error)
+            logger.error(error)
             return res.status(500).json({
                 status: "error",
                 msg: "Something went wrong :(",
@@ -57,7 +58,7 @@ class ProductsController {
             }
     
         } catch (error) {
-            console.log(error)
+            logger.error(error)
             return res.status(500).json({
                 status: "error",
                 msg: "Something went wrong :(",
@@ -78,7 +79,7 @@ class ProductsController {
             })
     
         } catch (error) {
-            console.log(error)
+            logger.error(error)
             return res.status(500).json({
                 status: "error",
                 msg: "Something went wrong :(",
@@ -101,7 +102,7 @@ class ProductsController {
             })
     
         } catch (error) {
-            console.log(error)
+            logger.error(error)
             return res.status(500).json({
                 status: "error",
                 msg: "Something went wrong :(",
@@ -124,7 +125,7 @@ class ProductsController {
             })
         }
         catch (error) {
-            console.log(error)
+            logger.error(error)
             return res.status(500).json({
                 status: "error",
                 msg: "Something went wrong :(",

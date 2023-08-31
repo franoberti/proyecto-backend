@@ -1,3 +1,4 @@
+import { logger } from "../middlewares/logger.js"
 import { cartService } from "../services/carts.service.js"
 
 class CartsController {
@@ -17,7 +18,7 @@ class CartsController {
                 data: carts
             })
         } catch (error) {
-            console.log(error)
+            logger.error(error)
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
