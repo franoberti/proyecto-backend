@@ -27,6 +27,8 @@ import nodemailer from 'nodemailer'
 import errorHandler from './middlewares/error.js'
 import { generateProduct } from "./utils/generator.js"
 import { logger } from "./middlewares/logger.js"
+import swaggerJSDoc from "swagger-jsdoc"
+import swaggerUiExpress from "swagger-ui-express"
 
 const app = express()
 const port = environment.PORT
@@ -39,6 +41,21 @@ const transport = nodemailer.createTransport({
         pass: 'aoexjirpukrdzenk'
     }
 })
+
+const swaggerOptions = {
+    definition: {
+        openai: "3.0.1",
+        info:{
+            title: "Documentacion Ecommerce",
+            description: "Este es un proyecto del backend de un ecommerce",
+            version: "1.0.0"
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 //CONECTO A LA BD de MongoDB
 MongoSingleton.getInstance()
