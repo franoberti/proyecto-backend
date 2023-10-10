@@ -1,2 +1,9 @@
 warn: Nivel de importancia WARN
 error: Validation Error: missing values
+error: Validation Error: missing values
+error: undefined {"_message":"products validation failed","errors":{"status":{"kind":"Boolean","message":"Cast to Boolean failed for value \"Disponible\" (type string) at path \"status\" because of \"CastError\"","name":"CastError","path":"status","reason":{"kind":"boolean","message":"Cast to boolean failed for value \"Disponible\" (type string) at path \"undefined\"","name":"CastError","stringValue":"\"Disponible\"","value":"Disponible","valueType":"string"},"stringValue":"\"Disponible\"","value":"Disponible","valueType":"string"}}}
+error: undefined {"kind":"ObjectId","path":"_id","reason":{},"stringValue":"\"3hf4h3284fh932rjew\"","value":"3hf4h3284fh932rjew","valueType":"string"}
+error: undefined {"kind":"ObjectId","path":"_id","reason":{},"stringValue":"\"3hf4h3284fh932rjew\"","value":"3hf4h3284fh932rjew","valueType":"string"}
+error: undefined {"kind":"ObjectId","path":"_id","reason":{},"stringValue":"\"3hf4h3284fh932rjew\"","value":"3hf4h3284fh932rjew","valueType":"string"}
+error: undefined {"kind":"ObjectId","path":"_id","reason":{},"stringValue":"\"3hf4h3284fh932rjew\"","value":"3hf4h3284fh932rjew","valueType":"string"}
+error: undefined

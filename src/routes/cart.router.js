@@ -6,20 +6,20 @@ const cartsRouter = express.Router()
 
 cartsRouter.get('/', cartsController.getAll)  
 
-cartsRouter.get('/:cid', cartsController.getById)
-
-cartsRouter.post('/:cid/products/:pid', cartsController.addProductByCart)
-
 cartsRouter.post('/', cartsController.createCart)
 
-cartsRouter.delete('/:cid/products/:pid', cartsController.deleteProductByCart)
+cartsRouter.get('/:cid', cartsController.getById)
 
 cartsRouter.put('/:cid', cartsController.updateAllProductsOnCart)
 
-cartsRouter.put('/:cid/purchase', cartsController.purchase)
+cartsRouter.delete('/:cid/products', cartsController.deleteAllProducts)
+
+cartsRouter.post('/:cid/products/:pid', cartsController.addProductByCart)
 
 cartsRouter.put('/:cid/products/:pid', cartsController.updateQuantityOfOneProduct)
 
-cartsRouter.delete('/:cid/products', cartsController.deleteAllProducts)
+cartsRouter.delete('/:cid/products/:pid', cartsController.deleteProductByCart)
+
+cartsRouter.put('/:cid/purchase', cartsController.purchase)
 
 export default cartsRouter

@@ -30,7 +30,91 @@ paths:
           content:
             aplication/json:
               schema:
-                $ref: "#components/schemas/Success"
+                $ref: "#components/schemas/SuccesPostProduct"
+        "500":
+          description: Ocurrio algun problema en el backend
+  
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto por su id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que desea obtener
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        "200":
+          description: Producto encontrado con exito
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/SuccesGetProductById"
+        "400":
+          description: Producto No encontrado
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/Error"
+        "500":
+          description: Ocurrio un problema en el servidor
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/Error"
+    put:
+      summary: Actualizar un producto
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que desea editar
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
+      responses:
+        "201":
+          description: Producto creado con exito
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/SuccesPutProduct"
+        "500":
+          description: Ocurrio algun problema en el backend
+    delete:
+      summary: Elimina un producto
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que desea eliminar
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        "200":
+          description: Producto eliminado con exito
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/SuccesDeleteProduct"
+        "500":
+          description: Ocurrio algun problema en el backend
+
 components:
   schemas:
     Success:
@@ -42,36 +126,125 @@ components:
         title:
           type: String
           description: Nombre del producto
-        description:
-          type: String
-          description: Descripcion del producto
         price:
           type: Number
           description: Precio del producto
-        code:
-          type: String
-          description: Codigo unico e irrepetible
-        stock:
-          type: Number
-          description: Stock actual del producto
-        category:
-          type: String
-          description: Categoria del producto
       example:
         _id: 3hf4h3284fh932rjew
         title: Iphone 13
-        description: Celular de la empresa Apple
         price: 850
-        code: "asd323r"
-        stock: 25
-        category: Celulares
+    SuccesPostProduct:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos del producto
+      example:
+        status: success
+        msg: product created
+        data:
+          title: Iphone 14
+          description: Celular de la empresa Apple
+          price: 950
+          code: asd32we123r
+          stock: 25
+          status: true
+          category: Celulares
+          _id: 651d7a6dcbf4e0fb11e5d2e1
+          __v: 0
+    SuccesPutProduct:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos de actualizacion realizada de la BD
+      example:
+        status: success
+        msg: product updated
+        data:
+          acknowledged: true
+          modifiedCount: 1
+          upsertedId: null
+          upsertedCount: 0
+          matchedCount: 1
+    SuccesDeleteProduct:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos de eliminacion realizada de la BD
+      example:
+        status: success
+        msg: product updated
+        data:
+          acknowledged: true
+          modifiedCount: 1
+          upsertedId: null
+          upsertedCount: 0
+          matchedCount: 1
+    SuccesGetProductById:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos del producto
+      example:
+        status: success
+        msg: producto encontrado con exito
+        data: 
+          title: Iphone 14
+          description: Celular de la empresa Apple
+          price: 950
+          code: asd32we123r
+          stock: 25
+          status: true
+          category: Celulares
+          _id: 651d7a6dcbf4e0fb11e5d2e1
+          __v: 0
+    Error:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos del producto
+      example:
+        status: error
+        msg: Something went wrong :(
+        data: {}
   requestBodies:
     postProduct:
       type: object
       properties:
-        _id:
-          type: ObjectId
-          description: ID autogenerado por mongo
         title:
           type: String
           description: Nombre del producto
@@ -81,20 +254,27 @@ components:
         price:
           type: Number
           description: Precio del producto
+        thumbnail:
+          type: String
+          description: Imagen del producto
         code:
           type: String
           description: Codigo unico e irrepetible
         stock:
           type: Number
           description: Stock actual del producto
+        status:
+          type: Boolean
+          description: True or False
         category:
           type: String
           description: Categoria del producto
       example:
-        _id: 3hf4h3284fh932rjew
         title: Iphone 14
         description: Celular de la empresa Apple
         price: 950
+        thumbnail: Imagen del producto
         code: "asd32we123r"
         stock: 25
+        status: true
         category: Celulares

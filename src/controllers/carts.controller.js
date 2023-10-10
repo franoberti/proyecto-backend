@@ -85,7 +85,7 @@ class CartsController {
     async createCart(req, res){
         try {
             const cartCreated = await cartService.createCart()
-            return res.status(200).json({
+            return res.status(201).json({
                 status: "success",
                 msg: "Carrito creado con exito",
                 data: cartCreated
@@ -110,7 +110,7 @@ class CartsController {
             
             if(cartUpdated === undefined){
     
-                return res.status(200).json({
+                return res.status(401).json({
                     status: "error",
                     msg: "El producto que desea eliminar no existe en el carrito",
                     data: {}
@@ -191,7 +191,7 @@ class CartsController {
     
             if(cart === undefined){
     
-                return res.status(200).json({
+                return res.status(401).json({
                     status: "error",
                     msg: "El producto que desea actualizar no existe en el carrito",
                     data: {}
@@ -200,7 +200,7 @@ class CartsController {
             else{
                 return res.status(200).json({
                     status: "success",
-                    msg: "producto actualizado con exito del carrito",
+                    msg: "producto del carrito actualizado con exito",
                     data: cart
                 })
             }

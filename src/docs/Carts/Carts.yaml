@@ -1,0 +1,328 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los productos fueron devueltos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessCart"
+        "500":
+          description: Ocurrio algun problema en el backend
+    post:
+      summary: Crea un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: Carrito creado con exito
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/SuccesPostCart"
+        "500":
+          description: Ocurrio algun problema en el backend
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un carrito por su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que desea obtener
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        "200":
+          description: Carrito encontrado con exito
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/SuccesGetCartById"
+        "400":
+          description: Carrito No encontrado
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/Error400"
+        "500":
+          description: Ocurrio un problema en el servidor
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/Error"
+    put:
+      summary: Actualiza todos los productos de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que desea obtener
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/putCartProducts"
+      responses:
+        "200":
+          description: Carrito actualizado con exito
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/SuccesPutCartById"
+        "500":
+          description: Ocurrio algun problema en el backend
+  /api/carts/{cid}/products:
+    delete:
+      summary: Elimina todos los productos de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que desea obtener
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        "200":
+          description: Carrito actualizado con exito  
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessCart"
+        "500":
+          description: Ocurrio algun problema en el backend
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Agrega un producto a un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+            format: ObjectId
+        - name: pid
+          in: path
+          required: True
+          description: ID del producto
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        "200":
+          description: Producto incorporado al carrito con exito
+          content:
+            aplication/json:
+              schema:
+                $ref: "#components/schemas/SuccesPutCartById"
+        "500":
+          description: Ocurrio algun problema en el backend
+    put:
+      summary: Modifica la cantidad de un producto en un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+            format: ObjectId
+        - name: pid
+          in: path
+          required: True
+          description: ID del producto
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/putCartProductsById"
+      responses:
+        "200":
+          description: Producto del carrito actualizado con exito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessCart"
+        "401":
+          description: El producto que desea actualizar no existe en el carrito
+        "500":
+          description: Ocurrio algun problema en el backend
+
+    delete:
+      summary: Elimina un producto de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+            format: ObjectId
+        - name: pid
+          in: path
+          required: True
+          description: ID del producto
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        "200":
+          description: Producto eliminado con exito del carrito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessCart"
+        "401":
+          description: El producto que desea eliminar no existe en el carrito
+        "500":
+          description: Ocurrio algun problema en el backend
+
+components:
+  schemas:
+    SuccessCart:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos del carrito
+      example:
+        status: success
+        msg: carito obtenido con exito
+        data:
+          _id: 64e680803a510a4f7eb12c3c
+          products: []
+          __v: 0
+    SuccesPostCart:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos del carrito
+      example:
+        status: success
+        msg: cart created
+        data:
+          _id: 64e680803a510a4f7eb12c3c
+          products: []
+          __v: 0
+    SuccesGetCartById:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos del carrito
+      example:
+        status: success
+        msg: carrito encontrado con exito
+        data: 
+          _id: 64e680803a510a4f7eb12c3c
+          products: []
+          __v: 0
+    SuccesPutCartById:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos de actualizacion realizada de la BD
+      example:
+        status: success
+        msg: product updated
+        data:
+          acknowledged: true
+          modifiedCount: 1
+          upsertedId: null
+          upsertedCount: 0
+          matchedCount: 1
+    Error400:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estado de la respuesta
+        msg:
+          type: String
+          description: Mensaje de respuesta del servidor
+        data:
+          type: object
+          description: Datos del producto
+      example:
+        status: error
+        msg: Carrito No encontrado
+        data: {}
+  requestBodies:
+    putCartProducts:
+      type: array
+      items:
+        type: object
+        properties:
+          product:
+            type: string
+            description: ID del producto
+          quantity:
+            type: integer
+            description: Cantidad del producto
+      example:
+        - product: "64820afa6e0d714be114f44e"
+          quantity: 1
+        - product: "64820afa6e0d714be114f44f"
+          quantity: 2
+    putCartProductsById:
+      type: object
+      properties:
+        quantity:
+          type: Number
+          description: Cantidad de productos a agregar al carrito
+      example:
+        quantity: 3

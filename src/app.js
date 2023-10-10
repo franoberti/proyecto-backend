@@ -44,10 +44,10 @@ const transport = nodemailer.createTransport({
 
 const swaggerOptions = {
     definition: {
-        openai: "3.0.1",
+        openapi: "3.0.1",
         info:{
-            title: "Documentacion Ecommerce",
-            description: "Este es un proyecto del backend de un ecommerce",
+            title: "Mi API",
+            description: "Documentacion de mi API",
             version: "1.0.0"
         }
     },
