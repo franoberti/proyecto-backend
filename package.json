@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node ./src/app.js PROD",
     "dev": "nodemon -e yaml,js ./src/app.js DEV",
-    "prod": "nodemon ./src/app.js PROD"
+    "prod": "nodemon ./src/app.js PROD",
+    "test": "mocha test/User.test.js"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +35,11 @@
     "passport-github2": "^0.1.12",
     "passport-local": "^1.0.0",
     "socket.io": "^4.6.1",
-    "winston": "^3.10.0"
+    "winston": "^3.10.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0"
   }
 }
