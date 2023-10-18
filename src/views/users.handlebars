@@ -1,0 +1,27 @@
+<div>
+    <h1>USERS</h1>
+    <hr />
+    <hr />
+    {{#each payload}}
+    <p>Nombre: <span>{{this.firstName}}</span></p>
+    <p>email: <span>{{this.email}}</span></p>
+    <p>rol:
+        <select name="selectRole" id="roleSelector{{@index}}">
+            <option value="{{this.role}}">{{this.role}}</option>
+            <option value="admin">admin</option>
+            <option value="user">user</option>
+        </select>
+    </p>
+
+    <button onclick="deleteUser('{{this.id}}')">Eliminar</button>
+    <button onclick="obtenerRolYModificar('{{this.id}}', {{@index}})">Modificar Rol</button>
+    <hr />
+    {{/each}}
+    <a href="/">Home</a>
+    <a href="/logout">Log Out</a>
+
+</div>
+
+
+<script src="/js/users.vista.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

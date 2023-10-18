@@ -29,6 +29,7 @@ import { generateProduct } from "./utils/generator.js"
 import { logger } from "./middlewares/logger.js"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUiExpress from "swagger-ui-express"
+import routerVistaUsers from "./routes/users.vista.router.js"
 
 const app = express()
 const port = environment.PORT
@@ -87,7 +88,7 @@ app.use(express.static(__dirname + "/public"))
 //ENDPOINTS APIs
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
-app.use("/api/sessions", sessionRouter)
+app.use("/api/users", sessionRouter)
 app.use("/api/tickets", ticketsRouter)
 app.use("/", viewsRouter)
 
@@ -95,6 +96,7 @@ app.use("/", viewsRouter)
 app.use("/vista/products", routerVistaProducts)
 app.use("/vista/realtimeproducts", routerVistaRealTimeProducts)
 app.use("/vista/cart", routerVistaCart)
+app.use("/vista/users", routerVistaUsers)
 
 app.get('/setCookie', (req, res) => {
     res.cookie('cookie-test', 'un dato importante', { maxAge: 10000, signed: true })

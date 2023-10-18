@@ -3,41 +3,20 @@ import { Users } from "../DAO/users.factory.js"
 
 
 class UsersService {
-    
-    async validateCreateUser( name, lastName, email, password) {
-        if (!name || !lastName || !email || !password ){
-            console.log("Validation Error: missing values")
-            throw "VALIDATION ERROR"
-        }
-        else{
-            
-            const user = await UsersModel.find({email: email})
-            console.log(user)
-            
-            if(user.length != 0){
-                throw "ERROR: El email ingresado ya pertenece a un usuario existente"
-            }
-        }
-    }
-    
-    async getUsers(email, pass) {
-        const userFounded = await Users.getUsers(email, pass)
-        return userFounded
-    }
 
     async getAllUsers() {
-        const users = await UsersModel.find({})
+        const users = await Users.getAllUsers()
         return users
     }
 
-    async createUser(user) {
-        
-        await this.validateCreateUser(user.name, user.lastName, user.email, user.password)
+    async deleteUser(id) {
+        const userDeleted = await Users.deleteUser(id)
+        return userDeleted
+    }
 
-        const { name, lastName, email, password } = user
-
-        const cartCreated = await UsersModel.create({name, lastName, email, password})
-        return cartCreated
+    async updateRole(id, newRole){
+        const userUpdated = await Users.updateRole(id, newRole)
+        return userUpdated
     }
 
 }

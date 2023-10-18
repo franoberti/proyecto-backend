@@ -1,5 +1,6 @@
-import { logger } from "../middlewares/logger";
-import { usersService } from "../services/users.service";
+import UserDTO from "../DAO/DTO/users.dto.js";
+import { logger } from "../middlewares/logger.js";
+import { usersService } from "../services/users.service.js";
 
 class UsersController {
 
@@ -7,23 +8,25 @@ class UsersController {
 
     async getAll(req, res){
         try {
-            const email = req.query.email
-            const pass = req.query.pass
     
-            const user = await usersService.getUsers(email, pass)
+            const users = await usersService.getAllUsers()
+            const usersDTO = users.map((prod) => {
+                const usersDTO = new UserDTO(prod)
+                return usersDTO
+            })
             
-            if(user.length === 0){
+            if(users.length === 0){
                 return res.status(500).json({
-                    status: "error",
-                    msg: "ERROR: Incorrect email or password",
+                    status: "success",
+                    msg: "No hay usuarios registrados",
                     data: {}
                 })
             }
             else{
                 return res.status(200).json({
                     status: "success",
-                    msg: "user founded",
-                    data: user
+                    msg: "Users",
+                    data: usersDTO
                 })
             }
         } catch (error) {
@@ -31,6 +34,55 @@ class UsersController {
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
+                data: {}
+            })
+        }
+    }
+
+    async deleteUser(req, res){
+
+        try {
+
+            const id = req.params.uid
+    
+            const userDeleted = await usersService.deleteUser(id)
+    
+            return res.status(200).json({
+                status: "success",
+                msg: "producto eliminado con exito",
+                data: userDeleted
+            })
+        }
+        catch (error) {
+            logger.error(error)
+            return res.status(500).json({
+                status: "error",
+                msg: "Something went wrong :(",
+                data: {}
+            })
+        }
+
+    }
+
+    async updateRoleUser(req, res){
+        try {
+
+            const id = req.params.uid
+            const newRole = req.body.role
+    
+            const userUpdated = await usersService.updateRole(id, newRole)
+    
+            return res.status(200).json({
+                status: "success",
+                msg: "producto eliminado con exito",
+                data: userUpdated
+            })
+        }
+        catch (error) {
+            logger.error(error)
+            return res.status(500).json({
+                status: "error",
+                msg: "Something went wrong :(",
                 data: {}
             })
         }

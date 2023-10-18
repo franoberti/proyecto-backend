@@ -16,7 +16,6 @@ routerVistaProducts.get("/", checkUser, async (req, res) => {
     const { page, limit, query, sort } = req.query
     const userName = req.session.user.firstName
     const cartId = req.session.user.cart
-    console.log(cartId)
 
     const products = await productService.getAllProductsPaginated(limit, page, query, sort)
 
