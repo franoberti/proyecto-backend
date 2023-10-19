@@ -17,3 +17,15 @@ error: undefined
 error: undefined
 error: undefined
 error: undefined
+error: undefined {"code":"ECONNREFUSED","hostname":"_mongodb._tcp.franocluster.hx1jh7a.mongodb.net","syscall":"querySrv"}
+error: undefined {"code":"ETIMEOUT","hostname":"franocluster.hx1jh7a.mongodb.net","syscall":"queryTxt"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined

@@ -11,6 +11,8 @@ sessionRouter.delete('/:uid', checkAdmin, usersController.deleteUser)
 
 sessionRouter.put('/:uid', checkAdmin, usersController.updateRoleUser)
 
+sessionRouter.get('/inactivos', usersController.getUsersInactive)
+
 sessionRouter.post('/login', passport.authenticate('login', {failureRedirect: '/api/users/faillogin'}), async (req, res) => {
     
     if(!req.user){
@@ -48,6 +50,7 @@ sessionRouter.get('/failregister', (req, res) => {
     res.render('error-page', {msg: 'fallo el registro'})
     
 })
+
 sessionRouter.get('/faillogin', (req, res) => {
     res.render('error-page', {msg: 'fallo el login'})
 })

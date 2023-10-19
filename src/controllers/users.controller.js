@@ -4,25 +4,25 @@ import { usersService } from "../services/users.service.js";
 
 class UsersController {
 
-    constructor(){}
+    constructor() { }
 
-    async getAll(req, res){
+    async getAll(req, res) {
         try {
-    
+
             const users = await usersService.getAllUsers()
             const usersDTO = users.map((prod) => {
                 const usersDTO = new UserDTO(prod)
                 return usersDTO
             })
-            
-            if(users.length === 0){
+
+            if (users.length === 0) {
                 return res.status(500).json({
                     status: "success",
                     msg: "No hay usuarios registrados",
                     data: {}
                 })
             }
-            else{
+            else {
                 return res.status(200).json({
                     status: "success",
                     msg: "Users",
@@ -39,14 +39,14 @@ class UsersController {
         }
     }
 
-    async deleteUser(req, res){
+    async deleteUser(req, res) {
 
         try {
 
             const id = req.params.uid
-    
+
             const userDeleted = await usersService.deleteUser(id)
-    
+
             return res.status(200).json({
                 status: "success",
                 msg: "producto eliminado con exito",
@@ -64,18 +64,40 @@ class UsersController {
 
     }
 
-    async updateRoleUser(req, res){
+    async updateRoleUser(req, res) {
         try {
 
             const id = req.params.uid
             const newRole = req.body.role
-    
+
             const userUpdated = await usersService.updateRole(id, newRole)
-    
+
             return res.status(200).json({
                 status: "success",
                 msg: "producto eliminado con exito",
                 data: userUpdated
+            })
+        }
+        catch (error) {
+            logger.error(error)
+            return res.status(500).json({
+                status: "error",
+                msg: "Something went wrong :(",
+                data: {}
+            })
+        }
+    }
+
+    async getUsersInactive(req, res) {
+        try {
+            const sessionsInactive = await usersService.getInactiveSessions()
+            
+            console.log(sessionsInactive);
+
+            return res.status(200).json({
+                status: "success",
+                msg: "usuarios inactivos encontrados con exito",
+                data: sessionsInactive
             })
         }
         catch (error) {

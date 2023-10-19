@@ -1,0 +1,20 @@
+<div>
+    <h1>USUARIOS INACTIVOS</h1>
+    <hr />
+    <hr />
+    {{#each payload}}
+    <p>Nombre: <span>{{this.firstName}}</span></p>
+    <p>email: <span>{{this.email}}</span></p>
+    <hr />
+    {{/each}}
+    <button onclick="deleteInvalidUsers()">Eliminar Usuarios</button>
+    <br>
+    <br>
+    <a href="/">Home</a>
+    <a href="/logout">Log Out</a>
+
+</div>
+
+
+<script src="/js/users.vista.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

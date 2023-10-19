@@ -14,9 +14,32 @@ class UsersService {
         return userDeleted
     }
 
-    async updateRole(id, newRole){
+    async updateRole(id, newRole) {
         const userUpdated = await Users.updateRole(id, newRole)
         return userUpdated
+    }
+
+    async getInactiveSessions() {
+        const allSessions = await Users.getAllSessions()
+        const sessionsInactive = []
+        const fechaActual = new Date();
+        console.log(allSessions);
+        for (let i = 0; i < allSessions.length; i++) {
+
+            const dateExpires = new Date(allSessions[i].expires)
+            // Calcula la diferencia en milisegundos
+            const diferenciaEnMilisegundos = dateExpires - fechaActual;
+
+            // Convierte la diferencia en días
+            const diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
+
+            if (diferenciaEnDias <= 5) {
+                const session = JSON.parse(allSessions[i].session)
+                sessionsInactive.push(session.user)
+            }
+
+        }
+        return sessionsInactive
     }
 
 }

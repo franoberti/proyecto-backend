@@ -34,7 +34,7 @@ import routerVistaUsers from "./routes/users.vista.router.js"
 const app = express()
 const port = environment.PORT
 
-const transport = nodemailer.createTransport({
+export const transport = nodemailer.createTransport({
     service: "gmail",
     port: 587,
     auth: {
@@ -103,25 +103,25 @@ app.get('/setCookie', (req, res) => {
     return res.json({ msg: 'cookie puesta!' })
 })
 app.get('/getCookie', (req, res) => {
-    res.send('nada')
+    console.log(req.cookies);
+    res.send('Las cookies se recibieron en el back')
 })
 app.get('/deleteCookie', (req, res) => {
     res.clearCookie('cookie-test')
-    res.send('borrado! fijate en la consola y ya no la tenes!!!')
+    res.send('borrado!')
 })
 
-app.get('/mail', async (req, res) => {
+app.post('/mail', async (req, res) => {
+
+    const sendTo = req.body.to
+    const subject = req.body.subject
+    const html = req.body.html
+
     const result = await transport.sendMail({
         from: 'franoberti45@gmail.com',
-        to: "franoberti1998@gmail.com",
-        subject: 'TEST',
-        html: `
-            <div>
-                <h1> HOLA ESTO ES UN TEST </h1>
-                <p> Esto significa que el test funciono </p>
-            </div>
-        
-        `
+        to: sendTo,
+        subject: subject,
+        html: html
     })
 
     res.send('Email Sent')

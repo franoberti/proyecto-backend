@@ -21,4 +21,13 @@ routerVistaUsers.get("/", checkAdmin, async (req, res) => {
     })
 })
 
+routerVistaUsers.get("/inactivos", checkAdmin, async (req, res) => {
+    
+    const usuariosInactivos = await usersService.getInactiveSessions()
+    console.log(usuariosInactivos);
+    return res.render("usersInactivos", {
+        payload: usuariosInactivos
+    })
+})
+
 export default routerVistaUsers
