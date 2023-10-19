@@ -15,6 +15,13 @@ routerVistaCart.get("/:cid", async (req, res) => {
 
         const cartToShow = cart[0].products
 
+        let total = 0
+        for (let i = 0; i < cartToShow.length; i++) {
+            total += cartToShow[i].product.price ;
+        }
+
+        console.log(total);
+
         let productos = cartToShow.map((prod) => {
             return {
                 id: prod.product._id.toString(),
@@ -30,7 +37,8 @@ routerVistaCart.get("/:cid", async (req, res) => {
                 status: "success",
                 titulo: "CARRITO",
                 payload: productos,
-                cartId: cartId
+                cartId: cartId,
+                total: total
             })
         }
         else{

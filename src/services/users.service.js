@@ -23,7 +23,6 @@ class UsersService {
         const allSessions = await Users.getAllSessions()
         const sessionsInactive = []
         const fechaActual = new Date();
-        console.log(allSessions);
         for (let i = 0; i < allSessions.length; i++) {
 
             const dateExpires = new Date(allSessions[i].expires)
@@ -35,11 +34,17 @@ class UsersService {
 
             if (diferenciaEnDias <= 5) {
                 const session = JSON.parse(allSessions[i].session)
+                session.user.idSession = allSessions[i]._id
                 sessionsInactive.push(session.user)
             }
 
         }
         return sessionsInactive
+    }
+
+    async deleteSession(idSesion) {
+        const response = await Users.deleteSession(idSesion)
+        return response
     }
 
 }

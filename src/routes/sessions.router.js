@@ -13,6 +13,8 @@ sessionRouter.put('/:uid', checkAdmin, usersController.updateRoleUser)
 
 sessionRouter.get('/inactivos', usersController.getUsersInactive)
 
+sessionRouter.delete('/sessions/:sid', usersController.deleteSession)
+
 sessionRouter.post('/login', passport.authenticate('login', {failureRedirect: '/api/users/faillogin'}), async (req, res) => {
     
     if(!req.user){

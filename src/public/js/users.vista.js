@@ -16,37 +16,50 @@ function deleteUser(id) {
 function deleteInvalidUsers() {
 
     let invalidUsers
+
     axios.get(`/api/users/inactivos`)
         .then(response => {
             invalidUsers = response.data.data
-
-            for (let i = 0; i < invalidUsers.length; i++) {
-                const userId = invalidUsers[i]._id
-                axios.delete(`/api/users/${userId}`)
-                    .then(response => {
-                        const to = invalidUsers[i].email
-                        const subject = 'Usuario Eliminado'
-                        const html = `  <div>
+            if (invalidUsers.length > 0) {
+                for (let i = 0; i < invalidUsers.length; i++) {
+                    const userId = invalidUsers[i]._id
+                    axios.delete(`/api/users/${userId}`)
+                        .then(response => {
+                            const to = invalidUsers[i].email
+                            const subject = 'Usuario Eliminado'
+                            const html = `  <div>
                                             <h1> HOLA ${invalidUsers[i].firstName} </h1>
                                             <p> Se ha eliminado su usuario del sistema "Proyecto Final CoderHouse - Backend" ya que ha estado inactivo por mas de dos dias.</p>
                                         </div>`
-                        axios.post(`/mail`, {to: to, subject: subject, html: html})
-                            .then(response => {
-                                console.log('Mail Enviado');
-                            })
-                        console.log('Usuario Eliminado');
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        alert('ERROR: Ocurrio un problema')
-                    });
+                            axios.post(`/mail`, { to: to, subject: subject, html: html })
+                                .then(response => {
+                                    axios.delete(`/api/users/sessions/${invalidUsers[i].idSession}`, {})
+                                        .then(response => {
+                                            console.log('Sesion Eliminada');
+                                        })
+                                        .catch(error => {
+                                            console.log(error)
+                                            alert('ERROR: Ocurrio un problema')
+                                        });
+                                })
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            alert('ERROR: Ocurrio un problema')
+                        });
+
+                }
+                alert('Usuarios eliminados con exito!')
             }
-            alert('Usuarios eliminados con exito!')
+            else{
+                alert('No hay usuarios inactivos!')
+            }
         })
         .catch(error => {
             console.log(error)
             alert('ERROR: Ocurrio un problema')
         });
+
 }
 
 

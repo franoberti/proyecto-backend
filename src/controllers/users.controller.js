@@ -91,13 +91,33 @@ class UsersController {
     async getUsersInactive(req, res) {
         try {
             const sessionsInactive = await usersService.getInactiveSessions()
-            
-            console.log(sessionsInactive);
 
             return res.status(200).json({
                 status: "success",
                 msg: "usuarios inactivos encontrados con exito",
                 data: sessionsInactive
+            })
+        }
+        catch (error) {
+            logger.error(error)
+            return res.status(500).json({
+                status: "error",
+                msg: "Something went wrong :(",
+                data: {}
+            })
+        }
+    }
+    
+    async deleteSession(req, res) {
+        try {
+
+            const sessionId = req.params.sid
+            const response = await usersService.deleteSession(sessionId)
+
+            return res.status(200).json({
+                status: "success",
+                msg: "sesion eliminada con exito",
+                data: response
             })
         }
         catch (error) {

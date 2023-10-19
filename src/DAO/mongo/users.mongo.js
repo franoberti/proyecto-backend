@@ -33,6 +33,14 @@ class Users {
         const allSessions = await collection.find({}).toArray();
         return allSessions
     }
+    
+    async deleteSession(idSesion) {
+        const collection = db.collection('sessions')
+        const response = await collection.deleteOne({ _id: idSesion })
+        return response
+    }
+
+
 
 }
 
